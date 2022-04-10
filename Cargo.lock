@@ -479,6 +479,7 @@ dependencies = [
  "aptos-global-constants",
  "aptos-management",
  "aptos-secure-storage",
+ "aptos-state-view",
  "aptos-temppath",
  "aptos-types",
  "aptos-vm",
@@ -719,6 +720,7 @@ dependencies = [
  "aptos-mempool",
  "aptos-metrics",
  "aptos-secure-storage",
+ "aptos-state-view",
  "aptos-telemetry",
  "aptos-temppath",
  "aptos-time-service",
@@ -948,6 +950,11 @@ dependencies = [
  "aptos-crypto",
  "aptos-types",
  "aptos-workspace-hack",
+ "bcs",
+ "move-core-types",
+ "serde 1.0.136",
+ "serde_bytes",
+ "serde_json",
 ]
 
 [[package]]
@@ -958,6 +965,7 @@ dependencies = [
  "aptos-config",
  "aptos-crypto",
  "aptos-logger",
+ "aptos-state-view",
  "aptos-types",
  "aptos-workspace-hack",
  "aptosdb",
@@ -2945,6 +2953,7 @@ dependencies = [
  "aptos-crypto",
  "aptos-id-generator",
  "aptos-infallible",
+ "aptos-state-view",
  "aptos-temppath",
  "aptos-types",
  "aptos-vm",
@@ -3011,6 +3020,7 @@ dependencies = [
  "aptos-logger",
  "aptos-sdk",
  "aptos-secure-push-metrics",
+ "aptos-state-view",
  "aptos-temppath",
  "aptos-transaction-builder",
  "aptos-types",
@@ -3041,6 +3051,7 @@ dependencies = [
  "aptos-config",
  "aptos-crypto",
  "aptos-genesis-tool",
+ "aptos-state-view",
  "aptos-temppath",
  "aptos-transaction-builder",
  "aptos-types",
@@ -3049,6 +3060,7 @@ dependencies = [
  "aptosdb",
  "executor",
  "executor-types",
+ "move-core-types",
  "rand 0.8.4",
  "storage-interface",
  "storage-service",
@@ -7183,7 +7195,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e0bccbcf40c8938196944a3da0e133e031a33f4d6b72db3bda3cc556e361905d"
 dependencies = [
  "lazy_static 1.4.0",
- "parking_lot 0.11.2",
+ "parking_lot 0.10.2",
  "serial_test_derive",
 ]
 
@@ -8524,7 +8536,7 @@ version = "1.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4ee73e6e4924fe940354b8d4d98cad5231175d615cd855b758adc658c0aac6a0"
 dependencies = [
- "cfg-if 1.0.0",
+ "cfg-if 0.1.10",
  "static_assertions",
 ]
 

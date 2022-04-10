@@ -21,11 +21,10 @@ use aptos_telemetry::{
 use aptos_time_service::TimeService;
 use aptos_types::{
     account_config::aptos_root_address,
-    account_state::AccountState,
+    account_state_view::AccountStateView,
     chain_id::ChainId,
     move_resource::MoveStorage,
     on_chain_config::{VMPublishingOption, ON_CHAIN_CONFIG_REGISTRY},
-    state_store::state_key::StateKey,
     waypoint::Waypoint,
 };
 use aptos_vm::AptosVM;
@@ -52,7 +51,6 @@ use state_sync_v1::network::{StateSyncEvents, StateSyncSender};
 use std::{
     boxed::Box,
     collections::{HashMap, HashSet},
-    convert::TryFrom,
     io::Write,
     net::ToSocketAddrs,
     path::PathBuf,
@@ -225,19 +223,23 @@ pub fn load_test_environment<R>(
 
 // Fetch chain ID from on-chain resource
 fn fetch_chain_id(db: &DbReaderWriter) -> ChainId {
-    let blob = db
-        .reader
-        .get_state_value_with_proof_by_version(
-            &StateKey::AccountAddressKey(aptos_root_address()),
-            (&*db.reader)
-                .fetch_synced_version()
-                .expect("[aptos-node] failed fetching synced version."),
-        )
-        .expect("[aptos-node] failed to get Aptos root address account state")
-        .0
-        .expect("[aptos-node] missing Aptos root address account state");
-    AccountState::try_from(&blob)
-        .expect("[aptos-node] failed to convert blob to account state")
+    let synced_version = (&*db.reader)
+        .fetch_synced_version()
+        .expect("[aptos-node] failed fetching synced version.");
+    let account_state_view = AccountStateView {
+        account_address: &aptos_root_address(),
+        state_value_resolver: (|x| {
+            let (state_value_option, _) = db
+                .reader
+                .get_state_value_with_proof_by_version(x, synced_version)?;
+            if let Some(state_value) = state_value_option {
+                return Ok(state_value.maybe_bytes.as_ref().cloned());
+            } else {
+                Ok(None)
+            }
+        }),
+    };
+    account_state_view
         .get_chain_id_resource()
         .expect("[aptos-node] failed to get chain ID resource")
         .expect("[aptos-node] missing chain ID resource")

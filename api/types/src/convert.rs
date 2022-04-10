@@ -208,11 +208,6 @@ impl<'a, R: MoveResolver + ?Sized> MoveConverter<'a, R> {
             StateKey::AccessPath(access_path) => {
                 self.try_access_path_into_write_set_change(access_path, op)
             }
-            // We should not expect account address here.
-            StateKey::AccountAddressKey(_) => Err(format_err!(
-                "Can't convert account address key {:?} to WriteSetChange",
-                state_key
-            )),
             StateKey::Raw(_) => Err(format_err!(
                 "Can't convert account raw key {:?} to WriteSetChange",
                 state_key

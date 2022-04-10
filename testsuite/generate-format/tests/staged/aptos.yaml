@@ -129,14 +129,10 @@ SignedTransaction:
 StateKey:
   ENUM:
     0:
-      AccountAddressKey:
-        NEWTYPE:
-          TYPENAME: AccountAddress
-    1:
       AccessPath:
         NEWTYPE:
           TYPENAME: AccessPath
-    2:
+    1:
       Raw:
         NEWTYPE: BYTES
 StructTag:
